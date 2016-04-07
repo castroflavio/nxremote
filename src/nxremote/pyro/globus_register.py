@@ -33,7 +33,7 @@ def register_file(ipts, filename, sample, temperature):
     new_annotations = [ {"name":"temperature", "type":"float8"},
                         {"name":"sample", "type":"text"}, 
                         {"name":"ipts", "type":"int8"},
-                        {"name":"facility", "type":"text"]
+                        {"name":"facility", "type":"text"}]
     responses = []
     for annotation in new_annotations:
         _,response = gcat.create_annotation_def(catalog_id, annotation['name'],annotation['type'])
