@@ -51,7 +51,7 @@ def main():
         description="Create NeXus file for diffuse scattering")
     parser.add_argument('-i', '--ipts', default='14374', help='IPTS Number')
     parser.add_argument('-f', '--file', default='PMN35PT_006K_norm', help='name of NeXus file')
-    parser.add_argumnet('-s', '--sample', default='PMN35PT', help='name of sample')
+    parser.add_argument('-s', '--sample', default='PMN35PT', help='name of sample')
     parser.add_argument('-t', '--temperature', default='6.0', help='sample temperature')
     args = parser.parse_args()
 
