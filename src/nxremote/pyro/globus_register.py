@@ -29,21 +29,32 @@ def register_file(ipts, filename, sample, temperature):
     member_info = {"data_type":"file", "data_uri":filename}
     _,response = gcat.create_member(catalog_id, dataset_id, member_info)
     member_id = response['id']
+
+    request_string = "/catalog/id=%s/dataset/id=%s/member/id=%s/annotation/annotations_present" % \
+                         (self.catalog_id, self.dataset_id, self.member_id)
+    _, result = wrap.catalogClient._request('GET', request_string)
+    if len(result) > 0:
+        annotations_present = result[0]['annotations_present']
+    else:
+        annotations_present = []
     
-    new_annotations = [ {"name":"temperature", "type":"float8"},
-                        {"name":"sample", "type":"text"}, 
-                        {"name":"ipts", "type":"int8"},
-                        {"name":"facility", "type":"text"}]
-    responses = []
-    for annotation in new_annotations:
-        _,response = gcat.create_annotation_def(catalog_id, annotation['name'],annotation['type'])
-        responses.append(response)    
+    annotations = [ {"name":"temperature", "type":"float8"},
+                    {"name":"sample", "type":"text"}, 
+                    {"name":"ipts", "type":"int8"},
+                    {"name":"facility", "type":"text"},
+                    {"name":"host", "type":"text"},
+                    {"name":"path", "type":"text"}]
+    for annotation in annotations:
+        if annotation not in annotations_present:
+            _,response = gcat.create_annotation_def(catalog_id, annotation['name'],annotation['type'])
 
     _,response = gcat.add_member_annotations(catalog_id, dataset_id, member_id,
                      {"temperature":temperature, 
                       "sample":sample,
                       "ipts:":ipts,
-                      "facility":"SNS"})
+                      "facility":"SNS",
+                      "host":"analysis.sns.gov",
+                      "path":filename})
 
 def main():
 
