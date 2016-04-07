@@ -1,0 +1,37 @@
+package:
+  name: nxremote
+  version: "0.1.0"
+
+source:
+  git_url: https://github.com/nexpy/nxremote.git
+  git_tag: v0.1.0
+
+build:
+  entry_points:
+    - nxstartserver = nxremote.pyro.start_server:main
+  number: 0
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - numpy >=1.6.0
+    - h5py
+    - Pyro4
+
+  run:
+    - python
+    - numpy >=1.6.0
+    - h5py
+    - Pyro4
+
+test:
+  imports:
+    - nexusformat
+    - nexusformat.nexus
+    - Pyro4
+
+about:
+  home: http://nexpy.github.io/nexpy/
+  license: BSD License
+  summary: 'nxremote: Python API to access remote NeXus data'
