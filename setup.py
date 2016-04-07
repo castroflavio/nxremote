@@ -39,7 +39,7 @@ setup (name =  nxremote.__package_name__,
        entry_points={
             # create & install scripts in <python>/bin
             'console_scripts': ['nxstartserver=nxremote.pyro.start_server:main',
-                                'globus_register=nxremote.scripts.globus_register:main'],
+                                'globus_register=nxremote.pyro.globus_register:main'],
        },
        classifiers= ['Development Status :: 4 - Beta',
                      'Intended Audience :: Developers',
