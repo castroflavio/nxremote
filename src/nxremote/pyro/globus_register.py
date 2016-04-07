@@ -13,7 +13,7 @@ def register_file(ipts, filename, sample, temperature):
 
     _, catalogs = wrap.catalogClient.get_catalogs()
     for catalog in catalogs:
-        if catalog['config']['name'] == 'SNS-Demo-1:
+        if catalog['config']['name'] == 'SNS-Demo-1':
             catalog_id = catalog['id']
 
     _, datasets = wrap.catalogClient.get_datasets(catalog_id)
