@@ -57,10 +57,6 @@ def main():
 
     ipts = args.ipts
     directory = '/SNS/CORELLI/IPTS-%s' % ipts
-    if len(args.runs) == 2:
-        runs = range(args.runs[0], args.runs[1]+1)
-    else:
-        runs = args.runs
     filename = os.path.join(directory, 'shared', args.file + '.nxs')
     sample = args.sample
     temperature = float(args.temperature)
