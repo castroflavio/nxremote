@@ -39,7 +39,7 @@ def register_file(ipts, filename, sample, temperature):
         _,response = gcat.create_annotation_def(catalog_id, annotation['name'],annotation['type'])
         responses.append(response)    
 
-    _,response = gcat.add_dataset_annotations(catalog_id, dataset_id, 
+    _,response = gcat.add_member_annotations(catalog_id, dataset_id, member_id,
                      {"temperature":temperature, 
                       "sample":sample,
                       "ipts:":ipts,
