@@ -31,7 +31,7 @@ def register_file(ipts, filename, sample, temperature):
     member_id = response['id']
 
     request_string = "/catalog/id=%s/dataset/id=%s/member/id=%s/annotation/annotations_present" % \
-                         (self.catalog_id, self.dataset_id, self.member_id)
+                         (catalog_id, dataset_id, member_id)
     _, result = wrap.catalogClient._request('GET', request_string)
     if len(result) > 0:
         annotations_present = result[0]['annotations_present']
