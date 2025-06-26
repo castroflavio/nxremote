@@ -4,13 +4,14 @@ import Pyro4
 import sys
 import threading
 import time
+import ssl
 
 def shutdown():
     time.sleep(1)
     daemon.shutdown()
 
 def message(msg):
-    print("pyro server: " + msg)
+    print("pyro TLS server: " + msg)
 
 class TestService1:
 
@@ -32,7 +33,7 @@ class TestService1:
         return t
 
     @Pyro4.expose
-    def exit(self,code):
+    def exit(self, code):
         message("Daemon exiting...")
         thread = threading.Thread(target=shutdown)
         thread.daemon = True
@@ -40,11 +41,32 @@ class TestService1:
         
 service = TestService1()
 
-# Make an empty Pyro daemon
+# Use automated port number by default
+port = 8443
+if len(sys.argv) > 1:
+    port = int(sys.argv[1])
+
+# Make an empty Pyro daemon with SSL
 Pyro4.config.SERIALIZERS_ACCEPTED.add("pickle")
-daemon = Pyro4.Daemon(host=None, port=8080)
+
+# Create SSL context with PSK
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
+
+# Set up PSK callback for server
+def psk_server_callback(identity, hint):
+    # Verify identity and return corresponding PSK
+    if identity == b"client1":
+        return bytes.fromhex("0123456789abcdef0123456789abcdef")
+    return None
+
+ssl_context.set_psk_server_callback(psk_server_callback)
+
+daemon = Pyro4.Daemon(host="0.0.0.0", port=port, sslContext=ssl_context)
+
 # Register the object as a Pyro object
-uri = daemon.register(service, 0)
+uri = daemon.register(service, objectId="testservice")
 
 # Print the URI so we can use it in the client later
 print("URI: " + str(uri))
